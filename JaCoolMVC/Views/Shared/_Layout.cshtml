@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Ja's Cool Coffee</title>
+    @Styles.Render("~/Content/main.css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="page-wrapper">
+        <header>
+            <section id="header">
+                <!-- Logo -->
+                <h1><a href="@Url.Action("Index", "Home")">Ja's Cool Coffee</a></h1>
+                @RenderSection("NavContent", required: false)
+            </section>
+        </header>
+        <div id="banner">
+            @RenderSection("BannerContent", required: false)
+        </div>
+        <div id="main">
+            @RenderBody()
+            @RenderSection("MainContent", required: false)
+        </div>
+        <footer>
+            <div class="float-center">
+                <p>&copy; @DateTime.Now.Year - Ja's Cool Coffee</p>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/main.js")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+    <script src="~/Scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Franchising";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section NavContent {
+    <nav id="nav">
+		<ul>
+			<li><a href="~/Home/Index">Menu</a></li>
+			<li><a href="~/Home/Products">Products</a></li>
+            <li class="current"><a href="~/Home/AboutUs">Franchising</a></li>
+		</ul>
+	</nav>
+}
+
+@section MainContent {
+    <section id="main">
+        <div class="box2">
+            <h3 style="text-align:center; font-size:50px; margin:20px;">Franchising Inquiry</h3>
+            <br />
+            <div class="form-franchise">
+                <asp:Label ID="Label1" runat="server" Text="Name of Applicant" Font-Size="Medium" Font-Bold="True"></asp:Label>
+                <input type="text" name="fname" class="form-style franchise-form" placeholder="Name of Applicant" id="fname" />
+                <asp:Label ID="Label2" runat="server" Text="Email" Font-Size="Medium" Font-Bold="True"></asp:Label>
+                <input type="text" name="femail" class="form-style franchise-form" placeholder="Your Email" id="femail" />
+                <asp:Label ID="Label3" runat="server" Text="Contact Number" Font-Size="Medium" Font-Bold="True"></asp:Label>
+                <input type="text" name="fcontact" class="form-style franchise-form" placeholder="Contact Number" id="fcontact" />
+                <asp:Label ID="Label4" runat="server" Text="Proposed Location" Font-Size="Medium" Font-Bold="True"></asp:Label>
+                <input type="text" name="flocation" class="form-style franchise-form" placeholder="Proposed Location" id="flocation" />
+                <asp:Label ID="Label5" runat="server" Text="Size in sqm?" Font-Size="Medium" Font-Bold="True"></asp:Label>
+                <input type="text" name="fsize" class="form-style franchise-form" placeholder="Size in sqm" id="fsize" />
+                <div class="center">
+                    <input type="submit" name="btnFranch" class="btn mt-4 fbtn center" value="Submit" />
+                </div>
+            </div>
+        </div>
+    </section>
+}

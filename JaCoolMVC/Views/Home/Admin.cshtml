@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section NavContent {
+    <nav id="nav">
+		<ul>
+			<li><a href="~/Home/Index">Menu</a></li>
+			<li class="current"><a href="~/Home/Products">Products</a></li>
+            <li><a href="~/Home/AboutUs">Franchising</a></li>
+		</ul>
+	</nav>
+}
+
+@section MainContent {
+    <section id="main">
+        <div class="box3">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact Number</th>
+                        <th>Location</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.id</td>
+                                <td>@item.name</td>
+                                <td>@item.email</td>
+                                <td>@item.contact_num</td>
+                                <td>@item.location</td>
+                                <td>@item.size</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="box3">
+            <br />
+            <div class="form-group horizontal-align">
+                <input type="text" class="admin-txt-id form-control" name="getId" id="getId" placeholder="Enter No." />
+                <input type="button" id="btnGet" value="Get Data" class="btn btn-primary" />
+            </div>
+            <div class="form-master">
+                <div class="form-group horizontal-align">
+                    <input type="text" class="form-control" name="dataname" id="dataname" placeholder="Name" disabled />
+                    <input type="text" class="form-control" name="dataemail" id="dataemail" placeholder="Email" disabled />
+                    <input type="text" class="form-control" name="datacontactnum" id="datacontactnum" placeholder="Contact Number" disabled />
+                </div>
+                <div class="form-group horizontal-align">
+                    <input type="text" class="form-control" name="datalocation" id="datalocation" placeholder="Location" disabled />
+                    <input type="text" class="form-control" name="datasize" id="datasize" placeholder="Size" disabled />
+                    <select id="StatusList" class="form-control">
+                        <option value="1">Pending</option>
+                        <option value="2">Processing</option>
+                        <option value="3">Settled</option>
+                    </select>
+                    <input type="button" id="btnUpdate" value="Update" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnGet").click(function () {
+                var id = $("#getId").val();
+                // Your AJAX request to get data here
+            });
+
+            $("#btnUpdate").click(function () {
+                var id = $("#getId").val();
+                var status = $("#StatusList").val();
+                // Your AJAX request to update data here
+            });
+        });
+    </script>
+}

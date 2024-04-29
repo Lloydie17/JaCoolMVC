@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section NavContent {
+    <nav id="nav">
+		<ul>
+			<li><a href="~/Home/Index">Menu</a></li>
+			<li class="current"><a href="~/Home/Products">Products</a></li>
+            <li><a href="~/Home/AboutUs">Franchising</a></li>
+		</ul>
+	</nav>
+}
+
+@section BannerContent {
+    <section id="banner">
+		<header>
+			<h2>Ja's brewed happiness in a cup!</h2>
+		</header>
+	</section>
+}
+
+@section MainContent {
+    <section id="main">
+        <div class="box">
+			<img class="prod-image" src="~/Images/Froccino-cookies.jpg" alt="" /> 
+			<header>
+				<h3><a href="~/Home/Products">Froccino Cookies n' Cream</a></h3>
+			</header>
+			<p>Blended Coffee with Oreo Cookies and Whipped Cream</p>
+            <div class="fback-section">
+                <ul>
+                    <li><input type="text" class="fback-name uppercase form-style" placeholder="Your Name (Optional)" id="fbackName" /></li>
+                    <li><input type="text" class="fback-text uppercase form-style" placeholder="Give me feedback!" id="fback" /></li>
+                    <li>
+                        <select id="fbackrate" class="fback-rate">
+                            <option selected disabled>Rate Me!</option>
+                            <option class="star-rate" value="★">★</option>
+                            <option class="star-rate" value="★★">★★</option>
+                            <option class="star-rate" value="★★★">★★★</option>
+                            <option class="star-rate" value="★★★★">★★★★</option>
+                            <option class="star-rate" value="★★★★★">★★★★★</option>
+                        </select>
+                    </li>
+                    <li><button type="button" class="fback-btn btn mt-4" onclick="submitFeedback()">Submit</button></li>
+                </ul>
+                <br /><br />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>FBACKID</th>
+                            <th>FBACKCOMMENT</th>
+                            <th>FBACKRATE</th>
+                            <th>NAME</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                            {
+                                foreach (var row in Model)
+                                {
+                                    <tr>
+                                        <td>@row.FBACKID</td>
+                                        <td>@row.FBACKCOMMENT</td>
+                                        <td>@row.FBACKRATE</td>
+                                        <td>@row.NAME</td>
+                                    </tr>
+                                }
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+}
+
+@section Scripts {
+    <script>
+        function submitFeedback() {
+            var name = document.getElementById('fbackName').value;
+            var feedback = document.getElementById('fback').value;
+            var rate = document.getElementById('fbackrate').value;
+            // You can use AJAX to submit the feedback
+            console.log(name, feedback, rate);
+        }
+    </script>
+}
