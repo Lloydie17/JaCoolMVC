@@ -1,6 +1,42 @@
 ﻿@{
     ViewBag.Title = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@using System.Data.SqlClient;
+@using System.Web.Security;
+
+@{
+    // Define the connection string
+    var connectionstring = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
+
+    if (IsPost)
+    {
+        var email = Request["logemail"];
+        var password = Request["logpass"];
+
+        // process login
+        using (var cn = new SqlConnection(connectionstring))
+        {
+            cn.Open();
+            var query = "SELECT ADMINEMAIL, PASSWORD FROM ADMIN WHERE ADMINEMAIL = @ADMINEMAIL AND PASSWORD = @PASSWORD";
+            using (var customerCmd = new SqlCommand(query, cn))
+            {
+                customerCmd.Parameters.AddWithValue("@ADMINEMAIL", email);
+                customerCmd.Parameters.AddWithValue("@PASSWORD", password);
+
+                using (var customerReader = customerCmd.ExecuteReader())
+                {
+                    if (customerReader.HasRows)
+                    {
+                        // Login successful
+                        Session["Admin"] = email;
+                        Response.Redirect("~/Home/Admin");
+                    }
+                }
+            }
+        }
+    }
 }
 
 @section MainContent {
@@ -18,15 +54,17 @@
                                     <div class="center-wrap">
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">Log In</h4>
-                                            <div class="form-group">
-                                                <input type="email" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off" />
-                                                <i class="input-icon uil uil-at"></i>
-                                            </div>
-                                            <div class="form-group mt-2">
-                                                <input type="password" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off" />
-                                                <i class="input-icon uil uil-lock-alt"></i>
-                                            </div>
-                                            <button type="button" class="btn mt-4" onclick="btnLogin_Click()">Login</button>
+                                            <form method="post">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-style" placeholder="Your Email" id="logemail" name="logemail" autocomplete="off" />
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" class="form-style" placeholder="Your Password" id="logpass" name="logpass" autocomplete="off" />
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" class="btn mt-4">Login</button>
+                                            </form>
                                             <p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
                                         </div>
                                     </div>
@@ -62,10 +100,6 @@
 
 @section Scripts {
     <script>
-        function btnLogin_Click() {
-            // Your login logic here
-        }
-
         function btnSignUp_Click() {
             // Your sign up logic here
         }

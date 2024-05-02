@@ -19,20 +19,50 @@
             <h3 style="text-align:center; font-size:50px; margin:20px;">Franchising Inquiry</h3>
             <br />
             <div class="form-franchise">
-                <asp:Label ID="Label1" runat="server" Text="Name of Applicant" Font-Size="Medium" Font-Bold="True"></asp:Label>
-                <input type="text" name="fname" class="form-style franchise-form" placeholder="Name of Applicant" id="fname" />
-                <asp:Label ID="Label2" runat="server" Text="Email" Font-Size="Medium" Font-Bold="True"></asp:Label>
-                <input type="text" name="femail" class="form-style franchise-form" placeholder="Your Email" id="femail" />
-                <asp:Label ID="Label3" runat="server" Text="Contact Number" Font-Size="Medium" Font-Bold="True"></asp:Label>
-                <input type="text" name="fcontact" class="form-style franchise-form" placeholder="Contact Number" id="fcontact" />
-                <asp:Label ID="Label4" runat="server" Text="Proposed Location" Font-Size="Medium" Font-Bold="True"></asp:Label>
-                <input type="text" name="flocation" class="form-style franchise-form" placeholder="Proposed Location" id="flocation" />
-                <asp:Label ID="Label5" runat="server" Text="Size in sqm?" Font-Size="Medium" Font-Bold="True"></asp:Label>
-                <input type="text" name="fsize" class="form-style franchise-form" placeholder="Size in sqm" id="fsize" />
-                <div class="center">
-                    <input type="submit" name="btnFranch" class="btn mt-4 fbtn center" value="Submit" />
-                </div>
+                <form method="post">
+                    <label>Name of Applicant</label>
+                    <input type="text" name="name" class="form-style franchise-form" placeholder="Name of Applicant" id="name" />
+                    <label>Email</label>
+                    <input type="text" name="email" class="form-style franchise-form" placeholder="Your Email" id="email" />
+                    <label>Contact Number</label>
+                    <input type="text" name="contact" class="form-style franchise-form" placeholder="Contact Number" id="contact" />
+                    <label>Proposed Location</label>
+                    <input type="text" name="location" class="form-style franchise-form" placeholder="Proposed Location" id="location" />
+                    <label>Size in sqm?</label>
+                    <input type="text" name="size" class="form-style franchise-form" placeholder="Size in sqm" id="size" />
+                    <div class="center">
+                        <input type="submit" name="btnFranch" class="btn mt-4 fbtn center" value="Submit" onclick="submitFranchise()" />
+                    </div>
+                </form>
             </div>
         </div>
     </section>
+}
+
+@section Scripts {
+    <script>
+        function submitFranchise() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var contact = document.getElementById('contact').value;
+            var location = document.getElementById('location').value;
+            var size = document.getElementById('size').value;
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Franchise inquiry submitted successfully");
+                    alert("Franchise inquiry submitted successfully");
+                    document.getElementById('name').value = "";
+                    document.getElementById('email').value = "";
+                    document.getElementById('contact').value = "";
+                    document.getElementById('location').value = "";
+                    document.getElementById('size').value = "";
+                }
+            };
+            xmlhttp.open("POST", "/Home/SubmitFranchise", true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("name=" + name + "&email=" + email + "&contact=" + contact + "&location=" + location + "&size=" + size);
+        }
+    </script>
 }

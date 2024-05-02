@@ -3,12 +3,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using System.Web.Security;
+
+@{
+    if (Session["Admin"] == null)
+    {
+        Session.Clear();
+        Session.Abandon();
+        FormsAuthentication.SignOut();
+        Response.Redirect("~/Home/Index");
+    }
+}
+
+@functions {
+    protected string GetStatusText(object status)
+    {
+        if (status != null)
+        {
+            int statusValue;
+            if (int.TryParse(status.ToString(), out statusValue))
+            {
+                switch (statusValue)
+                {
+                    case 1:
+                        return "Pending";
+                    case 2:
+                        return "Processing";
+                    case 3:
+                        return "Settled";
+                    default:
+                        return "Unknown";
+                }
+            }
+        }
+        return string.Empty;
+    }
+}
+
 @section NavContent {
     <nav id="nav">
 		<ul>
-			<li><a href="~/Home/Index">Menu</a></li>
-			<li class="current"><a href="~/Home/Products">Products</a></li>
-            <li><a href="~/Home/AboutUs">Franchising</a></li>
+			<li class="current"><a href="~/Home/Admin">Home</a></li>
+			<li><a id="btnLogout" href="#">Logout</a></li>
 		</ul>
 	</nav>
 }
@@ -31,6 +67,7 @@
                 <tbody>
                     @if (Model != null)
                     {
+                        int i = 1;
                         foreach (var item in Model)
                         {
                             <tr>
@@ -40,7 +77,9 @@
                                 <td>@item.contact_num</td>
                                 <td>@item.location</td>
                                 <td>@item.size</td>
+                                <td id="status_@item.id">@GetStatusText(item.status)</td>
                             </tr>
+                            i++;
                         }
                     }
                 </tbody>
@@ -78,13 +117,67 @@
         $(document).ready(function () {
             $("#btnGet").click(function () {
                 var id = $("#getId").val();
-                // Your AJAX request to get data here
+                $.ajax({
+                    url: '@Url.Action("GetFranchiseData", "Home/GetFranchiseData")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: id },
+                    success: function (data) {
+                        console.log(data); // Add this line
+                        $("#dataname").val(data.name);
+                        $("#dataemail").val(data.email);
+                        $("#datacontactnum").val(data.contact_num);
+                        $("#datalocation").val(data.location);
+                        $("#datasize").val(data.size);
+                        $("#StatusList").val(data.status);
+                    },
+                    error: function () {
+                        alert("Error retrieving data.");
+                    }
+                });
             });
 
             $("#btnUpdate").click(function () {
                 var id = $("#getId").val();
                 var status = $("#StatusList").val();
-                // Your AJAX request to update data here
+                $.ajax({
+                    url: '@Url.Action("UpdateFranchiseStatus", "Home")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: id, status: status },
+                    success: function (data) {
+                        if (data.success) {
+                            // Update status in the table
+                            $("#status_" + id).text(data.status);
+                            alert("Status updated successfully.");
+                        } else {
+                            alert("Error updating status.");
+                        }
+                    },
+                    error: function () {
+                        alert("Error updating status.");
+                    }
+                });
+            });
+
+            $("#btnLogout").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '@Url.Action("Logout", "Home")',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            // Redirect to the login page
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            alert("Error logging out: " + data.errorMessage);
+                        }
+                    },
+                    error: function () {
+                        alert("Error logging out.");
+                    }
+                });
             });
         });
     </script>
