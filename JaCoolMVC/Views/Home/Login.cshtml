@@ -8,8 +8,9 @@
 
 @{
     // Define the connection string
-    var connectionstring = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
-
+    //var connectionstring = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
+    var connectionstring = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\xx620\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True;Connect Timeout=30";
+    
     if (IsPost)
     {
         var email = Request["logemail"];

@@ -22,6 +22,9 @@ namespace JaCoolMVC.Controllers
 
     public class HomeController : Controller
     {
+        //string connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
+        string connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\xx620\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True;Connect Timeout=30";
+
         public ActionResult Index()
         {
             return View();
@@ -68,7 +71,6 @@ namespace JaCoolMVC.Controllers
 
         private List<FranchiseModel> GetFranchiseDataFromDatabase()
         {
-            var connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
             var franchiseData = new List<FranchiseModel>();
 
             using (var cn = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -109,8 +111,6 @@ namespace JaCoolMVC.Controllers
         [HttpPost]
         public ActionResult SubmitFeedback(string name, string feedback, string rate)
         {
-            // Define the connection string
-            var connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
 
             // Process the added data;
             using (var cn = new System.Data.SqlClient.SqlConnection(connectionString))
@@ -132,7 +132,6 @@ namespace JaCoolMVC.Controllers
         [HttpPost]
         public ActionResult SubmitFranchise(string name, string email, string contact, string location, string size)
         {
-            var connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
 
             using (var cn = new System.Data.SqlClient.SqlConnection(connectionString))
             {
@@ -159,7 +158,6 @@ namespace JaCoolMVC.Controllers
         [HttpPost]
         public JsonResult GetFranchiseData(string id)
         {
-            var connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
 
             using (var cn = new System.Data.SqlClient.SqlConnection(connectionString))
             {
@@ -192,15 +190,13 @@ namespace JaCoolMVC.Controllers
         [HttpPost]
         public JsonResult UpdateFranchiseStatus(string id, string status)
         {
-            var connectionString = @"Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\pc\Documents\Visual Studio 2012\Projects\JaCoolMVC\JaCoolMVC\App_Data\JACOOL_DB.mdf;Integrated Security=True";
-
             using (SqlConnection cn = new SqlConnection(connectionString))
             {
                 string query = "UPDATE FRANCHISE SET STATUS = @STATUS WHERE ID = @ID";
                 using (SqlCommand cmd = new SqlCommand(query, cn))
                 {
                     cn.Open();
-                    cmd.Parameters.AddWithValue("@STATUS", status);
+                    cmd.Parameters.AddWithValue("@STATUS", statusValue);
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.ExecuteNonQuery();
                     return Json(new { success = true, status = status });
